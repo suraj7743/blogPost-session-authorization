@@ -8,13 +8,13 @@ const getArticles = (req, res, next) => {
 
 const postArticles = catchAsync(async (req, res, next) => {
   const { title, description } = req.body;
-  const BlogPost = new BlogPost({
+  const blogpostdata = new BlogPost({
     title,
     description,
     user: req.session.user._id,
     PostTime: Date.now(),
   });
-  const data = await BlogPost.save();
+  const data = await blogpostdata.save();
   res.status(200).json({
     status: "message",
     data,
