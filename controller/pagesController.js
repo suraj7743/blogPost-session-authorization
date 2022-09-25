@@ -11,6 +11,12 @@ const getRegister = (req, res, next) => {
   res.send("this is Register page make register table ");
 };
 const PostRegister = catchAsync(async (req, res, next) => {
+  const existUser = await BlogUser.find({
+    email: req.body.email,
+  });
+  if (existUser) {
+    return next(new AppError("user already exist Enter unique credentials "));
+  }
   const { name, email, password } = req.body;
   const user = new BlogUser({
     name,

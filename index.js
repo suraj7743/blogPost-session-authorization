@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const MongoDbStore = require("connect-mongodb-session")(session);
 const pageAndRoute = require("./Routes/pageAndRoute");
 const ApiRoute = require("./Routes/ApiRoute");
+const e = require("express");
 
 const url = "mongodb://localhost:27017/blog";
 mongoose
@@ -43,6 +44,13 @@ app.get("/", (req, res, next) => {
 });
 app.use("/", pageAndRoute);
 app.use("/", ApiRoute);
+app.use((err, req, res, next) => {
+  console.log(err.stack);
+  res.status(err.statusCode || 500).json({
+    status: err.status || "fail",
+    message: err.message || "Internal server error",
+  });
+});
 app.listen(8000, () => {
   console.log("connected to server ");
 });
